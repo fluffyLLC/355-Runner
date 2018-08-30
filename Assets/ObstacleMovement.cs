@@ -8,7 +8,7 @@ public class ObstacleMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        print("I have made here a very big change now");
 	}
 	
 	// Update is called once per frame
