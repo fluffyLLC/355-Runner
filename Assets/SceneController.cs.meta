@@ -1,9 +1,12 @@
 fileFormatVersion: 2
 guid: 816c8efb57164684792dfea39751ff33
+timeCreated: 1535840034
+licenseType: Free
 MonoImporter:
-  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - prefabPlayFeild: {fileID: 1360518719113198, guid: a69717695f7fcd246b3884287d9d2cca,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
