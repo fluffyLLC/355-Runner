@@ -15,30 +15,27 @@ public class SceneController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        // GameObject k = (GameObject)playFeildArray[0];
         GameObject k = (GameObject)playFeildArray[playFeildArray.Count - 1];
-       //print("k: " + k.transform.position.z);
-
         if (k.transform.position.z <= feildLength) {
             spawnPlayFeild();
         }
-
-        spacePlayFeild();
         removePlayFeild();
 
 
     }
-
+    
+    //this function spawns the playfeild objects so that there is a playfeild at the begenning of play 
     void initalizePlayfeild() {
-        float loopAmount = feildLength + 5 / 1.1f;
-        Vector3 position = new Vector3(0, 0, -4.95f);
+        float loopAmount = feildLength + 5 / 1.1f;//calculate how many Play Feild objects will spawn based on the feild length
+        Vector3 position = new Vector3(0, 0, -4.95f);//set the position of the first feild
         for (int i = 0; i < loopAmount; i++) {
             GameObject p = Instantiate(prefabPlayFeild, position, Quaternion.identity);
             playFeildArray.Add(p);
-            position.z += 1.1f;
+            position.z += 1.1f;//set the position of the next playfeild object
         }
     }
 
+    //this function spawns new playfeild objects as they move forward
     void spawnPlayFeild() {
         GameObject g = (GameObject)playFeildArray[playFeildArray.Count - 1];
         //GameObject g = (GameObject)playFeildArray[0];
@@ -49,27 +46,15 @@ public class SceneController : MonoBehaviour {
         playFeildArray.Add(p);
     }
 
+    //this function removes playfeild objects after they pass a certin threshold
     void removePlayFeild() {
-        for (int i = playFeildArray.Count - 1; i > 0; i--)
+        for (int i = playFeildArray.Count - 1; i >= 0; i--)
         {
             GameObject current = (GameObject)playFeildArray[i];
             if (current.transform.position.z <= -5) {
                 Destroy((GameObject)playFeildArray[i]);
                 playFeildArray.RemoveAt(i);
             }
-        }
-    }
-
-
-    void spacePlayFeild() {
-       
-        for (int i = playFeildArray.Count - 1; i > 0; i--) {
-            GameObject current = (GameObject)playFeildArray[i];
-            GameObject next = (GameObject)playFeildArray[i-1];
-            print(current.transform.position.z - next.transform.position.z);
-            //if (current.transform.position.z - next.transform.position.z) {
-
-            // }
         }
     }
 }
