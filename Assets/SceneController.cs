@@ -5,7 +5,7 @@ using UnityEngine;
 public class SceneController : MonoBehaviour {
 
     public GameObject prefabPlayFeild;
-    float feildLength = 30;
+    float feildLength = 50;
     ArrayList playFeildArray = new ArrayList();
 
 	void Start () {

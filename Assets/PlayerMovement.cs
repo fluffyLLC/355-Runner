@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour {
             {
                 lane++;
             }
-            print(lane);
+            //print(lane);
             lane = Mathf.Clamp(lane, -1, 1);
         }
 

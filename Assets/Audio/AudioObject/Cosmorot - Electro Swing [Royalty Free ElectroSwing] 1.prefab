@@ -133,4 +133,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioScaleCap: 4
-  calibrating: 1
+  calibrating: 0

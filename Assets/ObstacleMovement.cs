@@ -8,11 +8,12 @@ public class ObstacleMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        //print(transform.position.z);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        
         transform.position += new Vector3(0, 0, speed) * Time.deltaTime;
 	}
 }
