@@ -11,8 +11,10 @@ public class SpectrumData : MonoBehaviour
     float[] freqBand = new float[8];
     float[] bandBuffer = new float[8];
     float[] bufferDecrease = new float[8];
+    public float audioScaleCap = 7;
+    public bool calibrating = false;
 
-    float[] audioBandHighest = new float[] {0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f};
+    float[] audioBandHighest = new float[8];// {0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f};
 
     public static float[] audioBand = new float[8];
     public static float[] audioBandBuffer = new float[8];
@@ -21,7 +23,10 @@ public class SpectrumData : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioBandHighest[0] = 0.000001f;
+        for (int i = 0; i < 8; i++)
+        {
+            audioBandHighest[i] = audioScaleCap;
+        }
     }
 
     // Update is called once per frame
@@ -37,11 +42,20 @@ public class SpectrumData : MonoBehaviour
     {
         for (int i = 0; i < 8; i++)
         {
-            if (freqBand[i] > audioBandHighest[i]) {
-                audioBandHighest[i] = freqBand[i];
+            if (calibrating)
+            {
+                print("i: " + i + " ABHighest: " + audioBandHighest[i] + " FQBand: " + freqBand[i]);
+
             }
-            audioBand[i] = (freqBand[i]/audioBandHighest[i]);
-            audioBandBuffer[i] = (bandBuffer[i]/audioBandHighest[i]);
+            if (freqBand[i] > audioBandHighest[i])
+            {
+                audioBandHighest[i] = freqBand[i];
+                
+
+            }
+            audioBand[i] = (freqBand[i] / audioBandHighest[i]);
+
+            audioBandBuffer[i] = (bandBuffer[i] / audioBandHighest[i]);
         }
 
     }
@@ -93,9 +107,9 @@ public class SpectrumData : MonoBehaviour
                 count++;
             }
 
-            average /= sampleCount;
+            average /= count;
 
-            freqBand[i] = average; //* 10;
+            freqBand[i] = average * 10;
         }
 
     }

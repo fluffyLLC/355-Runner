@@ -15,11 +15,11 @@ public class CubeScale : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (band == 0)
+       /* if (band == 0)
         {
             print("Lerp: " + Mathf.Lerp(scalemin, scaleMax, (SpectrumData.audioBandBuffer[band])));
             print("BandBuffer: " + SpectrumData.audioBandBuffer[band]);
-        }
+        }*/
         if (usebuffer) {
           
             
