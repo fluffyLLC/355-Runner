@@ -16,14 +16,15 @@ public class PlayerMovement : MonoBehaviour {
         float h = Input.GetAxisRaw("Horizontal");
         if (Input.GetButtonDown("Horizontal"))
         {
-            if (h == -1) // if pressing left
+            if (h == -1) // if pressing left a
             {
                 lane--;
             }
-            else if (h == 1) // if pressing right
+            else if (h == 1) // if pressing right d
             {
                 lane++;
             }
+            //print(lane);
             lane = Mathf.Clamp(lane, -1, 1);
         }
 
