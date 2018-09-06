@@ -6,26 +6,38 @@ public class PlayerMovement : MonoBehaviour {
 
     public float laneWidth = 2;
     int lane = 0;
+    float verticalPrevious;
+    float floorLock;
+    float gravity;
 
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        float h = Input.GetAxisRaw("Horizontal");
-        if (Input.GetButtonDown("Horizontal"))
-        {
-            if (h == -1) // if pressing left a
-            {
+
+
+
+    void Start() {
+
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+        float leftRight = Input.GetAxisRaw("Horizontal");
+        float jump = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetButtonDown("Horizontal")) {
+
+            // if pressing left a
+            if (leftRight == -1) {
                 lane--;
-            }
-            else if (h == 1) // if pressing right d
-            {
+            } else if (leftRight == 1) {// if pressing right d
+              
                 lane++;
             }
             //print(lane);
             lane = Mathf.Clamp(lane, -1, 1);
+        }
+
+        if (Input.GetButtonDown("Vertical")) {
+            
         }
 
         float targetX = lane * laneWidth;
@@ -35,5 +47,21 @@ public class PlayerMovement : MonoBehaviour {
 
 
 
-	}
+    }
+
+    void OverlappingAABB(AABB other) {
+        if (other.tag == "Coin") {
+            Coin coin = other.GetComponent<Coin>();
+            switch (coin.type) {
+                case Coin.CoinType.bigCoin:
+                    break;
+                case Coin.CoinType.littleCoin:
+                    break;
+                default:
+                    break;
+            }
+            Destroy(other.gameObject);
+        }
+
+    }
 }

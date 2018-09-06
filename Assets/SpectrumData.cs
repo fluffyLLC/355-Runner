@@ -60,11 +60,6 @@ public class SpectrumData : MonoBehaviour
 
     }
 
-    void GetAudioSpectrum()
-    {
-        audioSource.GetSpectrumData(samples, 0, FFTWindow.Blackman);
-    }
-
     void CalcBandBuffer()
     {
 
@@ -112,5 +107,10 @@ public class SpectrumData : MonoBehaviour
             freqBand[i] = average * 10;
         }
 
+    }
+
+    void GetAudioSpectrum()
+    {
+        audioSource.GetSpectrumData(samples, 0, FFTWindow.Blackman);
     }
 }
