@@ -35,21 +35,32 @@ public class CubeScale : MonoBehaviour
             if (usebuffer)
             {
                 transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(scalemin, (scaleMax * buildUp), (SpectrumData.audioBandBuffer[band])), transform.localScale.z);
-                checkForBecomeObstical(buildUp, (SpectrumData.audioBandBuffer[band]));
+                if (SpectrumData.obstscle[band] && transform.position.z <= 32) {
+                    print("checking");
+                    becomeObstical = SpectrumData.obstscle[band];
+                }
+                //CheckForBecomeObstical(buildUp, (SpectrumData.audioBandBuffer[band]));
             }
             else
             {
                 transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(scalemin, (scaleMax * buildUp), (SpectrumData.audioBand[band])), transform.localScale.z);
-                checkForBecomeObstical(buildUp, (SpectrumData.audioBandBuffer[band]));
+                if (SpectrumData.obstscle[band])
+                {
+                    becomeObstical = SpectrumData.obstscle[band];
+                }
+                //CheckForBecomeObstical(buildUp, (SpectrumData.audioBandBuffer[band]));
             }
         }
         else if (transform.localScale.y > 1 && !becomeObstical)
         {
+
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y - (gravity * Time.deltaTime), transform.localScale.z);
+
             if (transform.localScale.y - 1 < 0.1f)
             {
                 ClapBlockSize();
             }
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y - (gravity * Time.deltaTime), transform.localScale.z);
+            
         }
         else if (transform.localScale.y < 1)
         {
@@ -58,7 +69,8 @@ public class CubeScale : MonoBehaviour
 
     }
 
-    void checkForBecomeObstical(float buildUp, float scale) {
+   
+    void CheckForBecomeObstical(float buildUp, float scale) {
         if (buildUp > 0.9f && scale > scaleCap) {
             becomeObstical = true;
         }

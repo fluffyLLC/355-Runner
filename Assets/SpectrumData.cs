@@ -13,11 +13,20 @@ public class SpectrumData : MonoBehaviour
     float[] bufferDecrease = new float[8];
     public float audioScaleCap = 7;
     public bool calibrating = false;
+    public static bool[] obstscle = new bool[8];
 
-    float[] audioBandHighest = new float[8];// {0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f, 0.00001f};
+    float[] audioBandHighest = new float[8];
 
     public static float[] audioBand = new float[8];
     public static float[] audioBandBuffer = new float[8];
+    // public static float[] audioBandBuffer = new float[8];
+
+    public static float averageAmplitude;
+    public static float averageAmplitudeHighest;
+    public static float avrgAmplitudeBuffer;
+    public static float amplitudeHighest;
+    public static float[] channelTotal = new float[8];
+    public static float[] ChannelAverage = new float[8];
 
     // Use this for initialization
     void Start()
@@ -32,11 +41,77 @@ public class SpectrumData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ResetObstacles();
         GetAudioSpectrum();
-        makeFrequencyBands();
+        MakeFrequencyBands();
         CalcBandBuffer();
         CreateAudioBands();
+        CalcAverage();
+        GenerateObstacles();
+        
+        for (int i = 0; i < 8; i++)
+        {
+          //   print("averageAmplitudeHighest: " + averageAmplitudeHighest + " Band: " + i + " audioBandBuffer: " + audioBandBuffer[i]);
+        }
+        
     }
+
+    void CalcAverage()
+    {
+        float currentAmplitude = 0;
+        float currentAmplitudeBuffer = 0;
+
+        for (int i = 0; i < 8; i++)
+        {
+            currentAmplitude += freqBand[i];
+            currentAmplitudeBuffer += bandBuffer[i];
+        }
+        /*
+        if (currentAmplitude > amplitudeHighest)
+        {
+            amplitudeHighest = currentAmplitude;
+        }
+        */
+        averageAmplitude = currentAmplitude / amplitudeHighest;
+        avrgAmplitudeBuffer = currentAmplitudeBuffer / 8; // amplitudeHighest;
+
+        if (avrgAmplitudeBuffer > averageAmplitudeHighest) {
+            averageAmplitudeHighest = avrgAmplitudeBuffer;
+        }
+
+       
+
+    }
+
+    void GenerateObstacles()
+    {
+        float percent =  averageAmplitude / audioScaleCap ;
+
+        float threashold =  audioScaleCap -Mathf.Lerp(averageAmplitude,audioScaleCap,percent);
+        print(percent);
+        for (int i = 0; i < 8; i++)
+        {
+            if (bandBuffer[i] > threashold) {
+                // print(amplitudeHighest);
+                // print("amplitudeHighest: " + amplitudeHighest + " Band: " + i + " audioBandBuffer: " + audioBandBuffer[i]);
+                //print(audioBandBuffer[i] > averageAmplitudeHighest);
+                obstscle[i] = true;
+            }
+        }
+
+    }
+
+    void ResetObstacles()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+           // print("amplitudeHighest: "+ amplitudeHighest + " Band: " + i + " audioBandBuffer: " + audioBandBuffer[i]);
+            obstscle[i] = false; 
+        }
+
+    }
+
+
 
     void CreateAudioBands()
     {
@@ -45,16 +120,15 @@ public class SpectrumData : MonoBehaviour
             if (calibrating)
             {
                 print("i: " + i + " ABHighest: " + audioBandHighest[i] + " FQBand: " + freqBand[i]);
-
             }
             if (freqBand[i] > audioBandHighest[i])
             {
                 audioBandHighest[i] = freqBand[i];
-                
-
+                if (audioBandHighest[i] > audioScaleCap) {
+                    audioScaleCap = audioBandHighest[i];
+                }
             }
             audioBand[i] = (freqBand[i] / audioBandHighest[i]);
-
             audioBandBuffer[i] = (bandBuffer[i] / audioBandHighest[i]);
         }
 
@@ -74,7 +148,6 @@ public class SpectrumData : MonoBehaviour
             {
                 bandBuffer[i] = freqBand[i];
                 bufferDecrease[i] = 0.005f;
-
             }
 
             if (freqBand[i] < bandBuffer[i])
@@ -88,7 +161,7 @@ public class SpectrumData : MonoBehaviour
 
     }
 
-    void makeFrequencyBands()
+    void MakeFrequencyBands()
     {
         int count = 0;
 
@@ -110,6 +183,10 @@ public class SpectrumData : MonoBehaviour
             average /= count;
 
             freqBand[i] = average * 10;
+
+            if (freqBand[i] > amplitudeHighest) {
+                amplitudeHighest = freqBand[i];
+            }
         }
 
     }

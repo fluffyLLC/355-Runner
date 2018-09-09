@@ -931,7 +931,7 @@ MonoBehaviour:
   scalemin: 1
   scaleMax: 5
   usebuffer: 1
---- !u!1001 &1775679518
+--- !u!1001 &1915586742
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -969,11 +969,6 @@ Prefab:
     - target: {fileID: 4265302719937390, guid: 38248c75b41cc9e4a887c931aaf01f62, type: 2}
       propertyPath: m_RootOrder
       value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 114990224665709072, guid: 38248c75b41cc9e4a887c931aaf01f62,
-        type: 2}
-      propertyPath: audioScaleCap
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 38248c75b41cc9e4a887c931aaf01f62, type: 2}
