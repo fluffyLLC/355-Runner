@@ -67,7 +67,7 @@ public class AABB : MonoBehaviour {
     }
 
     void OverlappingAABB(AABB other) {
-        print("Woot");
+       // print("Woot");
         isOverlapping = true;
     }
 

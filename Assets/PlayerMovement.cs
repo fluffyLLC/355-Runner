@@ -10,15 +10,16 @@ public class PlayerMovement : MonoBehaviour {
     Vector3 Velocity;
     float friction = 0.85f;
     float acceleration = 4f;
-    float verticalPrevious;
-    float floorLock;
-    float gravity;
+    float jumImpulse = 15;
+    //float verticalPrevious;
+    float floorLock = 0;
+    float gravity = 40;
+    bool grounded = true;
 
     enum MovmentState {
         run,
         jump,
         glide
-
     }
 
     MovmentState playerState;
@@ -37,9 +38,11 @@ public class PlayerMovement : MonoBehaviour {
 
             case MovmentState.run:
                 DoRun();
+                checkForJump();
                 break;
             case MovmentState.jump:
                 DoJump();
+                checkIfGrounded();
                 break;
             case MovmentState.glide:
                 DoGlide();
@@ -48,13 +51,6 @@ public class PlayerMovement : MonoBehaviour {
                 print("error: MovmentState out of bounds");
                 break;
         }
-
-
-
-
-
-
-
 
 
     }
@@ -73,7 +69,6 @@ public class PlayerMovement : MonoBehaviour {
         Velocity.x *= friction; //* Time.deltaTime;
         //}
 
-
         float x = transform.position.x + Velocity.x * Time.deltaTime;
         transform.position = new Vector3(x, 0, 0);
 
@@ -85,21 +80,52 @@ public class PlayerMovement : MonoBehaviour {
 
         }
 
+        
+
     }
 
+    void checkForJump() {
+        float jump = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetButtonDown("Vertical") && jump > 0) {
+            playerState = MovmentState.jump;
+            Velocity.x = 0;
+        }
+    }
+
+
     void DoJump() {
-        // float jump = Input.GetAxisRaw("Vertical");
+        //print("Jumping");
+       // float jump = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetButtonDown("Vertical")) {
+        if ( grounded) {
+           // print("applying jump");
+            grounded = false;
+            Velocity.y += jumImpulse;
+        }
 
+        Velocity.y -= gravity * Time.deltaTime;
+       
+
+        float y = transform.position.y + Velocity.y * Time.deltaTime;
+        transform.position = new Vector3(transform.position.x, y, 0);
+        //print(transform.position.y);
+
+
+    }
+
+    void checkIfGrounded() {
+        if (transform.position.y <= 0) {
+            transform.position = new Vector3(transform.position.x, floorLock, 0);
+            Velocity.y = 0;
+            grounded = true;
+            playerState = MovmentState.run;
         }
     }
 
     void DoGlide() {
 
     }
-
-
 
 
     void OverlappingAABB(AABB other) {

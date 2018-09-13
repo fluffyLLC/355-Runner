@@ -85,10 +85,18 @@ public class SpectrumData : MonoBehaviour
 
     void GenerateObstacles()
     {
+        /*
+         *
+         * 
+         * 
+         * 
+         *
+         */
+
         float percent =  averageAmplitude / audioScaleCap ;
 
         float threashold =  audioScaleCap -Mathf.Lerp(averageAmplitude,audioScaleCap,percent);
-        print(percent);
+       // print(percent);
         for (int i = 0; i < 8; i++)
         {
             if (bandBuffer[i] > threashold) {
@@ -119,7 +127,7 @@ public class SpectrumData : MonoBehaviour
         {
             if (calibrating)
             {
-                print("i: " + i + " ABHighest: " + audioBandHighest[i] + " FQBand: " + freqBand[i]);
+               // print("i: " + i + " ABHighest: " + audioBandHighest[i] + " FQBand: " + freqBand[i]);
             }
             if (freqBand[i] > audioBandHighest[i])
             {

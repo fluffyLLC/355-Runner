@@ -8,7 +8,7 @@ public class CollisionController : MonoBehaviour {
 
     static public void Add(AABB obj) {
         aabbs.Add(obj);
-        print("got added");
+        //print("got added");
     }
 
     static public void Remove(AABB obj) {
