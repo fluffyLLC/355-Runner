@@ -7,6 +7,7 @@ public class SceneController : MonoBehaviour {
     public GameObject prefabPlayFeild;
     float feildLength = 50;
     ArrayList playFeildArray = new ArrayList();
+    public int score = 30; //for in class GUI example, never used
 
 	void Start () {
         InitalizePlayfeild();

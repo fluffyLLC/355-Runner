@@ -20,19 +20,15 @@ public class CubeScale : MonoBehaviour {
      */
     int obstical = 0;
 
-    GameObject cube;
+    public GameObject cube;
 
 
     MeshRenderer _mesh; //C# private C# feild
 
     public MeshRenderer mesh {//C#  property
         get {
-            if (cube != null) {
                 if (!_mesh) _mesh = cube.GetComponent<MeshRenderer>();// "lazy" initailisation
                 return _mesh;
-            } else {
-                return _mesh = new MeshRenderer();
-            }
         }
     }
 
@@ -42,49 +38,18 @@ public class CubeScale : MonoBehaviour {
         }
     }
 
-    void FindCube() {
-        if (this.transform.Find("Cube").gameObject != null) {
-            cube = this.transform.Find("Cube").gameObject;
-        } else {
-            print("Error: cube not found attatched to music block or script cube scale was attatched to another object");
-            // cube = null;
-        }
-    }
-
     // Use this for initialization
     void Start() {
-        FindCube();
+    
     }
 
     // Update is called once per frame
     void Update() {
 
-        float buildUp = 1;
-        // print(transform.position.z);
-        if (transform.position.z > 30) {
-            float x = (transform.position.z - 30) / 20;
-            buildUp = Mathf.Lerp(1, 0, x);
-            //print(buildUp);
-        }
+        
 
         if (transform.position.z > 31) {
-            if (usebuffer) {
-                transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(scalemin, (scaleMax * buildUp), (SpectrumData.audioBandBuffer[band])), transform.localScale.z);
-                scale = Mathf.Lerp(scalemin, (scaleMax * buildUp), (SpectrumData.audioBandBuffer[band]));
-                if (SpectrumData.obstscle[band] && transform.position.z <= 32) {
-                    //print("checking");
-                    // becomeObstical = SpectrumData.obstscle[band];
-                    CheckForBecomeObstical();
-                }
-                //CheckForBecomeObstical(buildUp, (SpectrumData.audioBandBuffer[band]));
-            } else {
-                transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(scalemin, (scaleMax * buildUp), (SpectrumData.audioBand[band])), transform.localScale.z);
-                if (SpectrumData.obstscle[band]) {
-                    //becomeObstical = SpectrumData.obstscle[band];
-                    CheckForBecomeObstical();
-                }
-                //CheckForBecomeObstical(buildUp, (SpectrumData.audioBandBuffer[band]));
-            }
+           
         } else if (transform.localScale.y > 1 && obstical == 0) {
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y - (gravity * Time.deltaTime), transform.localScale.z);
             if (transform.localScale.y - 1 < 0.1f) {
@@ -99,6 +64,30 @@ public class CubeScale : MonoBehaviour {
         }
     }
 
+    public void VisualizeCube() {
+        float buildUp = 1;
+        if (transform.position.z > 30) {
+            float x = (transform.position.z - 30) / 20;
+            buildUp = Mathf.Lerp(1, 0, x);
+        }
+
+        if (usebuffer) {
+            transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(scalemin, (scaleMax * buildUp), (SpectrumData.audioBandBuffer[band])), transform.localScale.z);
+            scale = Mathf.Lerp(scalemin, (scaleMax * buildUp), (SpectrumData.audioBandBuffer[band]));
+            if (SpectrumData.obstscle[band] && transform.position.z <= 32) { 
+                CheckForBecomeObstical();
+            }
+        } else {
+            transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(scalemin, (scaleMax * buildUp), (SpectrumData.audioBand[band])), transform.localScale.z);
+            if (SpectrumData.obstscle[band]) {
+                CheckForBecomeObstical();
+            }
+        }
+    }
+
+
+
+
     void HandleObsticle() {
         if (obstical == 1) {
             ScaleJumpable();
@@ -108,7 +97,6 @@ public class CubeScale : MonoBehaviour {
 
     void ScaleJumpable() {
         if (bounds.max.y > jumpapbleObsticleCap) {
-           // print("adjusting");
             AdjustBlockHeight();
         } else if (Mathf.Abs(bounds.max.y - jumpapbleObsticleCap) <= 0.1f) { //if block is within clamping range
             ClapBlockSize(jumpapbleObstScale);
@@ -122,23 +110,17 @@ public class CubeScale : MonoBehaviour {
 
 
     void AdjustBlockHeight(bool down = true) {
-        
+
         if (down) {
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y - (gravity * Time.deltaTime), transform.localScale.z);
         } else {
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + (gravity * Time.deltaTime), transform.localScale.z);
         }
         //print("scale y: " + transform.localScale.y + " TOB: " + bounds.max.y);
-       
-
-
     }
 
-    
 
-
-
-    void CheckForBecomeObstical(/*float buildUp, float scale*/) {
+    void CheckForBecomeObstical() {
         
         if (bounds.max.y > dodgeObsticleCap && obstical == 0) {
             obstical = 2;
