@@ -21,6 +21,7 @@ public class SceneController : MonoBehaviour {
             SpawnPlayFeild();
         }
         RemovePlayFeild();
+        //print(playFeildArray.Count);
 
 
     }

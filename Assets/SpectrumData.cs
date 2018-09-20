@@ -46,8 +46,8 @@ public class SpectrumData : MonoBehaviour
         MakeFrequencyBands();
         CalcBandBuffer();
         CreateAudioBands();
-        CalcAverage();
-        GenerateObstacles();
+        //CalcAverage();
+        //GenerateObstacles();
         
         for (int i = 0; i < 8; i++)
         {

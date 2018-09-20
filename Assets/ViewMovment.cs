@@ -15,7 +15,7 @@ public class ViewMovment : MonoBehaviour {
 	void Update () {
         if (veiwTarget) {
 
-            transform.position = (transform.position - transform.position) * .5f;
+            transform.position = Vector3.Lerp(transform.position, veiwTarget.position, .1f);
 
         }
 	}
